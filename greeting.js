@@ -5,19 +5,31 @@ const form     = document.querySelector(".js-form"),
 const USER_LS    = "currentUser",
       SHOWING_CN = "showing";
 
-function askForName(){
-    form.classList.add(SHOWING_CN);
+function saveName(text) {
+    localStorage.setItem(USER_LS, text); //localStorage에 입력받은 사용자명을 기억시킴
 }
 
-function paintGreeting(text){
+function handleSubmit(event) {
+    event.preventDefault(); // 동작을 막음
+    const currentValue = input.value;
+    paintGreeting(currentValue);  
+    saveName(currentValue);
+}
+
+function askForName() {
+    form.classList.add(SHOWING_CN);
+    form.addEventListener("submit", handleSubmit);
+}
+
+function paintGreeting(text) {
     form.classList.remove(SHOWING_CN);
     greeting.classList.add(SHOWING_CN);
     greeting.innerText = `Hello ${text}`;
 }
 
-function loadName(){
+function loadName() {
     const currentUser = localStorage.getItem(USER_LS);
-    if(currentUser === null){
+    if(currentUser === null) {
         // she is not
         askForName();
     } else {
@@ -26,7 +38,7 @@ function loadName(){
     }
 }
 
-function init(){
+function init() {
     loadName();
 }
 
